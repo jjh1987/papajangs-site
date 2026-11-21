@@ -325,3 +325,14 @@ if (qz) {
     });
   });
 })();
+
+
+/* PC: 작업 전/작업 후 버튼에 마우스만 올려도 사진 바뀜 */
+(function(){
+  if (!window.matchMedia || !matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  document.addEventListener('mouseover', function(e){
+    var b = e.target.closest && e.target.closest('.ba2-btn button');
+    if (!b || b.getAttribute('aria-pressed') === 'true') return;
+    b.click();
+  });
+})();
