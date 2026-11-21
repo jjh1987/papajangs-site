@@ -311,3 +311,17 @@ if (qz) {
   new MutationObserver(up).observe(st, { childList: true, characterData: true, subtree: true });
   up();
 })();
+
+
+/* 장소별 페이지: 시공 사례를 9개씩 더 보기 */
+(function(){
+  [].forEach.call(document.querySelectorAll('[data-more-btn]'), function(btn){
+    var sec = btn.closest('section'); var box = sec && sec.querySelector('.logs[data-more]');
+    if (!box) { btn.hidden = true; return; }
+    btn.addEventListener('click', function(){
+      var rest = box.querySelectorAll('.ticket[hidden]');
+      for (var i = 0; i < rest.length && i < 9; i++) rest[i].hidden = false;
+      if (box.querySelectorAll('.ticket[hidden]').length === 0) btn.hidden = true;
+    });
+  });
+})();
