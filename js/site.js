@@ -247,3 +247,22 @@ if (qz) {
     } else open('tel');
   });
 })();
+
+
+/* 견적 질문 옆 순서 안내: 질문 중에는 1번, 결과 화면에서는 2·3번 켜기 */
+(function(){
+  var q = document.querySelector('[data-quiz]'), side = document.querySelector('.q-side');
+  if (!q || !side) return;
+  var st = q.querySelector('.q-step'), items = side.querySelectorAll('.q-flow li');
+  function up(){
+    var done = st.textContent.trim() === '완료';
+    side.classList.toggle('is-done', done);
+    [].forEach.call(items, function(li){
+      var s = +li.getAttribute('data-s');
+      li.classList.toggle('on', done ? s > 1 : s === 1);
+      li.classList.toggle('done', done && s === 1);
+    });
+  }
+  new MutationObserver(up).observe(st, { childList: true, characterData: true, subtree: true });
+  up();
+})();
