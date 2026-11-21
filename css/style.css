@@ -521,3 +521,55 @@ html.pjqr-lock{overflow:hidden}
 .out-btn b{font-size:14px;line-height:1.35;color:var(--ink);word-break:keep-all}
 .out-btn:hover,.out-btn.on,.out-btn:focus-visible{background:#ffe3bc;outline:none}
 @media (max-width:540px){.out-grid{gap:7px}.out-btn{padding:8px 5px;border-width:2.5px}.out-btn svg{height:36px}.out-btn b{font-size:12.5px}}
+
+/* hero dark: 고정 타일 배경 + 오른쪽 작업 전후 비교 (2026-11-22) */
+@property --bp{syntax:'<percentage>';inherits:true;initial-value:50%}
+.hero-dark{margin-top:-67px;padding:calc(67px + 40px) 0 56px;min-height:100vh;display:flex;align-items:center;color:#fff;background:#0b1626}
+.hero-dark:before{display:none}
+.hero-dark .hero-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scale(1.04);max-width:none}
+.hero-dark:after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,18,34,.93) 0%,rgba(8,18,34,.72) 45%,rgba(8,18,34,.4) 100%),linear-gradient(0deg,rgba(8,18,34,.6),transparent 40%);pointer-events:none}
+.hero-dark .wrap{z-index:2;width:100%;grid-template-columns:1fr 470px;gap:50px}
+.hero-dark .kicker{padding:6px 14px;border-radius:999px;background:rgba(255,159,28,.18);color:var(--orange);border:1px solid rgba(255,159,28,.4);font-size:14px}
+.hero-dark .kicker:before{display:none}
+.hero-dark h1{color:#fff;font-size:clamp(44px,5.6vw,74px);line-height:1.08;margin:22px 0 22px}
+.hero-dark h1 .mark{background:none;color:var(--orange);padding:0}
+.hero-dark .lead{color:rgba(255,255,255,.86);font-size:18px}
+.hero-dark .tel-link{color:#fff;border-bottom-color:#fff}
+.hero-dark .tel-link small{color:rgba(255,255,255,.7)}
+.hero-dark .promise li{color:rgba(255,255,255,.92)}
+.hero-dark .promise li:before{background:var(--orange);box-shadow:inset -6px -6px 0 var(--orange2)}
+.ba-box{background:rgba(255,255,255,.1);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.26);border-radius:22px;padding:14px;box-shadow:0 40px 80px -30px rgba(0,0,0,.6);color:#fff}
+.ba-top{display:flex;justify-content:space-between;align-items:center;padding:4px 6px 12px}
+.ba-top b{font-size:15px}.ba-top small{font-size:13px;opacity:.7}
+.ba-view{--bp:50%;position:relative;aspect-ratio:10/9;border-radius:14px;overflow:hidden;cursor:ew-resize;user-select:none;-webkit-user-select:none;touch-action:pan-y;transition:--bp 1s cubic-bezier(.6,0,.2,1);background:#223}
+.ba-view.drag{transition:none}
+.ba-view img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ba-view .af{clip-path:inset(0 0 0 var(--bp))}
+.ba-view .bf{filter:saturate(.8)}
+.ba-view .ln{position:absolute;top:0;bottom:0;left:var(--bp);width:3px;margin-left:-1.5px;background:#fff;box-shadow:0 0 10px rgba(0,0,0,.4)}
+.ba-view .ln:after{content:'‹ ›';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;border-radius:50%;background:var(--orange);color:var(--ink);display:grid;place-items:center;font:800 16px Montserrat,sans-serif;border:3px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,.35)}
+.ba-view .t{position:absolute;top:12px;z-index:2;font-size:12.5px;font-weight:800;padding:4px 11px;border-radius:999px;color:#fff;line-height:1.5}
+.ba-view .t.x{left:12px;background:rgba(15,35,64,.88)}.ba-view .t.y{right:12px;background:var(--orange);color:var(--ink)}
+.ba-cap{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 6px 12px;line-height:1.4}
+.ba-cap small{display:block;font-size:13px;color:var(--orange);font-weight:700}.ba-cap strong{font-size:18px}
+.ba-nv{display:flex;gap:6px;flex:none}.ba-nv button{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.35);background:rgba(255,255,255,.08);color:#fff;font-size:17px;font-weight:800;cursor:pointer}
+.ba-nv button:hover{background:var(--orange);color:var(--ink);border-color:var(--orange)}
+.ba-th{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.ba-th button{border:0;padding:0;aspect-ratio:1;border-radius:8px;overflow:hidden;cursor:pointer;opacity:.45;background:#223;transition:opacity .2s}
+.ba-th button img{width:100%;height:100%;object-fit:cover}.ba-th button.on{opacity:1;box-shadow:0 0 0 2px var(--orange)}
+/* 첫 화면 위 어두운 머리말 */
+.top.on-dark:not(.open){background:rgba(8,18,34,.35);border-bottom-color:rgba(255,255,255,.14)}
+.top.on-dark:not(.open) .brand b{color:#fff}
+.top.on-dark:not(.open) .brand small{color:rgba(255,255,255,.7)}
+.top.on-dark:not(.open) .menu a{color:rgba(255,255,255,.92)}
+.top.on-dark:not(.open) .menu a:hover{background:rgba(255,255,255,.12);color:#fff;box-shadow:none}
+.top.on-dark:not(.open) .top-call{background:transparent;box-shadow:inset 0 0 0 1px rgba(255,255,255,.5)}
+.top.on-dark:not(.open) .menu-btn{background:rgba(255,255,255,.1);box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.3)}
+.top.on-dark:not(.open) .menu-btn span{background:#fff}
+.top{transition:background .25s,border-color .25s}
+@media (max-width:900px){
+  .hero-dark{min-height:0;padding:calc(67px + 36px) 0 40px;display:block}
+  .hero-dark .wrap{grid-template-columns:1fr;gap:36px}
+  .hero-dark .lead{font-size:15.5px}
+  .ba-box{padding:10px;border-radius:18px}
+}
