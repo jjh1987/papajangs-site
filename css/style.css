@@ -411,3 +411,25 @@ footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px}
 .visit-count .vc-live i{display:inline-block;vertical-align:middle;margin:-2px 7px 0 0;width:7px;height:7px;border-radius:50%;background:#3ecf6e;box-shadow:0 0 0 0 rgba(62,207,110,.6);animation:vcPulse 2s infinite}
 @keyframes vcPulse{0%{box-shadow:0 0 0 0 rgba(62,207,110,.55)}70%{box-shadow:0 0 0 7px rgba(62,207,110,0)}100%{box-shadow:0 0 0 0 rgba(62,207,110,0)}}
 @media (prefers-reduced-motion:reduce){.visit-count .vc-live i{animation:none}}
+
+
+/* PC 문자·전화 QR코드 창 */
+html.pjqr-lock{overflow:hidden}
+.pjqr{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:20px;visibility:hidden;opacity:0;transition:opacity .2s,visibility .2s}
+.pjqr.on{visibility:visible;opacity:1}
+.pjqr-bg{position:absolute;inset:0;background:rgba(15,35,64,.55)}
+.pjqr-box{position:relative;width:340px;max-width:100%;background:var(--paper);border-radius:14px;padding:30px 28px 24px;text-align:center;box-shadow:0 24px 60px rgba(15,35,64,.35);border-top:6px solid var(--orange);transform:translateY(12px);transition:transform .2s}
+.pjqr.on .pjqr-box{transform:none}
+.pjqr.tel .pjqr-box{border-top-color:var(--navy)}
+.pjqr-x{position:absolute;right:10px;top:8px;width:36px;height:36px;border:0;background:none;font-size:28px;line-height:1;color:var(--muted);cursor:pointer;border-radius:50%}
+.pjqr-x:hover{background:var(--paper2);color:var(--ink)}
+.pjqr-kick{display:inline-block;font-size:12.5px;font-weight:800;color:var(--ink);background:var(--orange);padding:3px 10px;border-radius:999px;margin-bottom:10px}
+.pjqr.tel .pjqr-kick{background:var(--navy);color:#fff}
+.pjqr-box h3{font-size:21px;line-height:1.4;font-weight:800;color:var(--ink);margin-bottom:16px}
+.pjqr-code{width:220px;height:220px;margin:0 auto;background:#fff;border-radius:10px;padding:8px;box-shadow:inset 0 0 0 1.5px var(--line)}
+.pjqr-code svg{display:block;width:100%;height:100%}
+.pjqr-sub{font-size:14.5px;color:var(--muted);margin-top:14px;line-height:1.6}
+.pjqr-num{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:16px;padding-top:16px;border-top:1px dashed var(--line)}
+.pjqr-num b{font-size:19px;color:var(--navy);letter-spacing:.2px}
+.pjqr-copy{border:0;cursor:pointer;font-family:inherit;font-weight:700;font-size:13px;padding:7px 12px;border-radius:999px;background:var(--white);color:var(--navy);box-shadow:inset 0 0 0 1.5px var(--line)}
+.pjqr-copy:hover{box-shadow:inset 0 0 0 1.5px var(--navy)}
