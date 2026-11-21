@@ -481,3 +481,9 @@ html.pjqr-lock{overflow:hidden}
   #where .other-places{order:2;margin-top:14px}
   #where .room-card{order:3;margin-top:24px}
 }
+
+
+/* 견적 결과: 찍어 보낼 사진 칸과 보낼 문자 칸 가로로 나란히 */
+.q-boxes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px;margin-bottom:10px;align-items:stretch}
+.q-boxes .q-box{margin-bottom:0}
+@media (max-width:540px){.q-boxes{grid-template-columns:1fr;gap:10px}}
