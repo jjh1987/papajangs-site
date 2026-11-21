@@ -99,7 +99,7 @@ if (qz) {
       '<div class="q-box"><b>보낼 문자 (자동으로 채워집니다)</b><div class="q-sms">' + esc(sms) + '</div></div></div>' +
       '<div class="q-nav"><button type="button" class="q-prev">← 이전 질문</button><button type="button" class="q-reset">처음부터 다시</button></div>' +
       '<div class="q-send"><a class="btn btn-main" href="' + href + '">문자 보내고 견적 받기</a></div>' +
-      '<p class="q-pc">사진을 꼼꼼히 보고 최대한 바로 견적을 드리고, 사진으로 어려우면 직접 방문해서라도 최소 견적을 맞춰드립니다.<br>컴퓨터로 보고 계시면 버튼을 누르고 휴대폰으로 QR코드를 찍어 주세요.</p></div>';
+      '<p class="q-pc">컴퓨터로 보고 계시면 버튼을 누르고 휴대폰으로 QR코드를 찍어 주세요.</p></div>';
   };
   render('r');
 }
