@@ -233,12 +233,64 @@ if (qz) {
     var a = e.target.closest && e.target.closest('a[href^="sms:"], a[href^="tel:"]');
     if (!a) return;
     e.preventDefault();
+    hidePop();
     var h = a.getAttribute('href') || '';
     if (h.indexOf('sms:') === 0) {
       var m = h.match(/[?&]body=([^&]*)/);
       open('sms', m ? decodeURIComponent(m[1]) : '안녕하세요, 파파장스 사이트 보고 연락드립니다.');
     } else open('tel');
   });
+
+  /* 마우스를 올리면 버튼 옆에 작은 QR 카드 */
+  if (!document.getElementById('pjpop-css')) { var st2 = document.createElement('style'); st2.id = 'pjpop-css'; st2.textContent = ".pjpop{position:fixed;z-index:150;left:0;top:0;width:210px;background:var(--paper);border-radius:12px;padding:14px 14px 12px;text-align:center;box-shadow:0 18px 40px rgba(15,35,64,.3);border-top:5px solid var(--orange);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .15s,transform .15s,visibility .15s;cursor:pointer}\n.pjpop.on{opacity:1;visibility:visible;transform:none}\n.pjpop[data-place=down]{transform:translateY(-6px)}\n.pjpop[data-place=down].on{transform:none}\n.pjpop.tel{border-top-color:var(--navy)}\n.pjpop:after{content:'';position:absolute;left:var(--ax,50%);bottom:-7px;width:14px;height:14px;background:var(--paper);transform:translateX(-50%) rotate(45deg)}\n.pjpop[data-place=down]:after{bottom:auto;top:-10px;background:var(--orange)}\n.pjpop.tel[data-place=down]:after{background:var(--navy)}\n.pjpop-kick{display:inline-block;font-size:11.5px;font-weight:800;color:var(--ink);background:var(--orange);padding:2px 9px;border-radius:999px;margin-bottom:8px}\n.pjpop.tel .pjpop-kick{background:var(--navy);color:#fff}\n.pjpop-code{width:160px;height:160px;margin:0 auto;background:#fff;border-radius:8px;padding:6px;box-shadow:inset 0 0 0 1.5px var(--line)}\n.pjpop-code svg{display:block;width:100%;height:100%}\n.pjpop-sub{font-size:12.5px;color:var(--muted);margin-top:8px;line-height:1.5}"; document.head.appendChild(st2); }
+  function infoFor(a){
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('sms:') === 0) { var m = h.match(/[?&]body=([^&]*)/); return { kind: 'sms', body: m ? decodeURIComponent(m[1]) : '안녕하세요, 파파장스 사이트 보고 연락드립니다.' }; }
+    return { kind: 'tel' };
+  }
+  var pop = null, popFor = null, tShow = null, tHide = null;
+  function hidePop(){ clearTimeout(tShow); clearTimeout(tHide); if (pop) pop.classList.remove('on'); popFor = null; }
+  function hidePopSoon(){ clearTimeout(tHide); tHide = setTimeout(hidePop, 200); }
+  function showPop(a){
+    loadQR(function(){
+      if (!document.body.contains(a)) return;
+      if (!pop) {
+        pop = document.createElement('div'); pop.className = 'pjpop'; pop.setAttribute('role', 'tooltip');
+        pop.innerHTML = '<span class="pjpop-kick"></span><div class="pjpop-code"></div><p class="pjpop-sub"></p>';
+        document.body.appendChild(pop);
+        pop.addEventListener('mouseenter', function(){ clearTimeout(tHide); });
+        pop.addEventListener('mouseleave', hidePopSoon);
+        pop.addEventListener('click', function(){ if (!popFor) return; var i = infoFor(popFor); hidePop(); open(i.kind, i.body); });
+      }
+      var i = infoFor(a); popFor = a;
+      pop.className = 'pjpop ' + i.kind;
+      pop.querySelector('.pjpop-kick').textContent = i.kind === 'sms' ? '문자 보내고 견적 받기' : '전화하기';
+      pop.querySelector('.pjpop-code').innerHTML = svgFor(i.kind === 'sms' ? 'SMSTO:' + TEL + ':' + (i.body || '') : 'tel:' + TEL);
+      pop.querySelector('.pjpop-sub').innerHTML = i.kind === 'sms' ? '휴대폰 카메라로 찍으면<br>문자창이 바로 열립니다.' : '휴대폰 카메라로 찍으면<br>전화 화면으로 넘어갑니다.';
+      var r = a.getBoundingClientRect(), pw = pop.offsetWidth, ph = pop.offsetHeight;
+      var top = r.top - ph - 12, place = 'up';
+      if (top < 76) { top = r.bottom + 12; place = 'down'; }
+      var left = Math.max(10, Math.min(window.innerWidth - pw - 10, r.left + r.width / 2 - pw / 2));
+      pop.style.top = top + 'px'; pop.style.left = left + 'px';
+      pop.style.setProperty('--ax', Math.max(18, Math.min(pw - 18, r.left + r.width / 2 - left)) + 'px');
+      pop.setAttribute('data-place', place);
+      void pop.offsetWidth; pop.classList.add('on');
+    });
+  }
+  document.addEventListener('mouseover', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="sms:"], a[href^="tel:"]');
+    if (!a) return;
+    if (box && box.classList.contains('on')) return;
+    clearTimeout(tHide);
+    if (popFor === a && pop && pop.classList.contains('on')) return;
+    clearTimeout(tShow); tShow = setTimeout(function(){ showPop(a); }, 150);
+  });
+  document.addEventListener('mouseout', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="sms:"], a[href^="tel:"]');
+    if (!a || (e.relatedTarget && a.contains(e.relatedTarget))) return;
+    clearTimeout(tShow); hidePopSoon();
+  });
+  window.addEventListener('scroll', hidePop, { passive: true });
 })();
 
 
