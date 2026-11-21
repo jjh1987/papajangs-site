@@ -506,3 +506,18 @@ html.pjqr-lock{overflow:hidden}
 .plan svg.house a.room{cursor:pointer}
 .plan svg.house a.room:focus{outline:none}
 .plan svg.house a.room:focus-visible .rf{fill:#ffe3bc}
+
+
+/* 홈 평면도 아래 '집 밖 현장' 버튼 */
+.out-row{margin-top:14px}
+.out-head{display:flex;align-items:center;gap:12px;font-size:13px;font-weight:800;color:var(--muted);margin-bottom:10px}
+.out-head:before,.out-head:after{content:'';flex:1;border-top:1.5px dashed #b9ae9c}
+.out-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.out-btn{display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:6px;background:#fff;border:3px solid var(--ink);border-radius:8px;padding:10px 8px;text-align:center;transition:background .2s}
+.out-btn svg{width:100%;height:50px;display:block}
+.out-btn svg *{fill:rgba(255,255,255,.8);stroke:#8a96a8;stroke-width:1.6}
+.out-btn svg .tl{fill:url(#tilep)}
+.out-btn svg .ln{fill:none}
+.out-btn b{font-size:14px;line-height:1.35;color:var(--ink);word-break:keep-all}
+.out-btn:hover,.out-btn.on,.out-btn:focus-visible{background:#ffe3bc;outline:none}
+@media (max-width:540px){.out-grid{gap:7px}.out-btn{padding:8px 5px;border-width:2.5px}.out-btn svg{height:36px}.out-btn b{font-size:12.5px}}
