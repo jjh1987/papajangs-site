@@ -487,3 +487,22 @@ html.pjqr-lock{overflow:hidden}
 .q-boxes{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px;margin-bottom:10px;align-items:stretch}
 .q-boxes .q-box{margin-bottom:0}
 @media (max-width:540px){.q-boxes{grid-template-columns:1fr;gap:10px}}
+
+
+/* 홈 평면도: 실제 집 도면 모양 */
+.plan svg.house .room .rf{fill:#fff;stroke:none;transition:fill .2s}
+.plan svg.house .room:hover .rf,.plan svg.house .room.on .rf{fill:#ffe3bc}
+.plan svg.house .room .fx rect,.plan svg.house .room .fx ellipse,.plan svg.house .room .fx circle,.plan svg.house .room .fx path{fill:rgba(255,255,255,.75);stroke:#8a96a8;stroke-width:1.6}
+.plan svg.house .room text{paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:5px;stroke-linejoin:round}
+.plan svg.house .room:hover text,.plan svg.house .room.on text{stroke:rgba(255,227,188,.9)}
+.plan svg.house .furn *{fill:none;stroke:#cfc6b6;stroke-width:1.6}
+.plan svg.house .walls .w{stroke:var(--ink);stroke-width:10;fill:none;stroke-linecap:square}
+.plan svg.house .walls .w2{stroke:var(--ink);stroke-width:6;fill:none;stroke-linecap:square}
+.plan svg.house .walls .win{stroke:var(--ink);stroke-width:1.6;fill:none}
+.plan svg.house .walls .sash{stroke:#8a96a8;stroke-width:2;fill:none}
+.plan svg.house .walls .door{stroke:var(--ink);stroke-width:2.2;fill:none}
+.plan svg.house .walls .arc{stroke:#8a96a8;stroke-width:1.3;fill:none;stroke-dasharray:3 3}
+.plan svg.house .walls .step{stroke:#8a96a8;stroke-width:1.6;stroke-dasharray:5 4}
+.plan svg.house a.room{cursor:pointer}
+.plan svg.house a.room:focus{outline:none}
+.plan svg.house a.room:focus-visible .rf{fill:#ffe3bc}
