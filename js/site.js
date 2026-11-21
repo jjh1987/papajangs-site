@@ -95,8 +95,8 @@ if (qz) {
     var sms = '안녕하세요, 파파장스 사이트 보고 연락드립니다.\n장소: ' + A.place + '\n상태: ' + A.state + '\n개수: ' + A.count + '\n보관 타일: ' + A.spare + '\n지역: ' + A.area;
     var href = pjSmsHref(sms);
     stage.innerHTML = '<div class="q-card q-res in-r"><span class="q-stamp" aria-hidden="true">견적 준비 끝</span><h3>문자를 보내주시면<br>최대한 빠르게 <span style="white-space:nowrap">답변 드리겠습니다.</span></h3>' +
-      '<div class="q-box"><b>찍어 보낼 사진</b><ol>' + shots.map(function(s){ return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
-      '<div class="q-box"><b>보낼 문자 (자동으로 채워집니다)</b><div class="q-sms">' + esc(sms) + '</div></div>' +
+      '<div class="q-boxes">' + '<div class="q-box"><b>찍어 보낼 사진</b><ol>' + shots.map(function(s){ return '<li>' + esc(s) + '</li>'; }).join('') + '</ol></div>' +
+      '<div class="q-box"><b>보낼 문자 (자동으로 채워집니다)</b><div class="q-sms">' + esc(sms) + '</div></div></div>' +
       '<div class="q-nav"><button type="button" class="q-prev">← 이전 질문</button><button type="button" class="q-reset">처음부터 다시</button></div>' +
       '<div class="q-send"><a class="btn btn-main" href="' + href + '">문자 보내고 견적 받기</a></div>' +
       '<p class="q-pc">사진을 꼼꼼히 보고 최대한 바로 견적을 드리고, 사진으로 어려우면 직접 방문해서라도 최소 견적을 맞춰드립니다.<br>컴퓨터로 보고 계시면 버튼을 누르고 휴대폰으로 QR코드를 찍어 주세요.</p></div>';
