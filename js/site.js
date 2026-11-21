@@ -210,17 +210,10 @@ if (qz) {
     box.innerHTML = '<div class="pjqr-bg" data-x></div><div class="pjqr-box" role="dialog" aria-modal="true" aria-labelledby="pjqr-t">' +
       '<button type="button" class="pjqr-x" data-x aria-label="닫기">&times;</button>' +
       '<span class="pjqr-kick"></span><h3 id="pjqr-t">휴대폰 카메라로<br>QR코드를 찍어 주세요</h3>' +
-      '<div class="pjqr-code"></div><p class="pjqr-sub"></p>' +
-      '<div class="pjqr-num"><b>' + SHOW + '</b><button type="button" class="pjqr-copy">번호 복사</button></div></div>';
+      '<div class="pjqr-code"></div><p class="pjqr-sub"></p></div>';
     document.body.appendChild(box);
     box.addEventListener('click', function(e){ if (e.target.hasAttribute('data-x')) close(); });
     document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
-    var cp = box.querySelector('.pjqr-copy');
-    cp.addEventListener('click', function(){
-      var done = function(){ cp.textContent = '복사했어요'; setTimeout(function(){ cp.textContent = '번호 복사'; }, 1800); };
-      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(SHOW).then(done, done);
-      else { var t = document.createElement('textarea'); t.value = SHOW; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (er) {} t.remove(); done(); }
-    });
   }
   function open(kind, body){
     loadQR(function(){
