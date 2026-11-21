@@ -99,7 +99,7 @@ if (qz) {
       '<div class="q-box"><b>보낼 문자 (자동으로 채워집니다)</b><div class="q-sms">' + esc(sms) + '</div></div>' +
       '<div class="q-nav"><button type="button" class="q-prev">← 이전 질문</button><button type="button" class="q-reset">처음부터 다시</button></div>' +
       '<div class="q-send"><a class="btn btn-main" href="' + href + '">문자 보내고 견적 받기</a></div>' +
-      '<p class="q-pc">사진을 꼼꼼히 보고 최대한 바로 견적을 드리고, 사진으로 어려우면 직접 방문해서라도 최소 견적을 맞춰드립니다.<br>컴퓨터로 보고 계시면 위 내용을 휴대폰 문자로 <span style="white-space:nowrap">010-2900-8802</span>에 보내주세요.</p></div>';
+      '<p class="q-pc">사진을 꼼꼼히 보고 최대한 바로 견적을 드리고, 사진으로 어려우면 직접 방문해서라도 최소 견적을 맞춰드립니다.<br>컴퓨터로 보고 계시면 버튼을 누르고 휴대폰으로 QR코드를 찍어 주세요.</p></div>';
   };
   render('r');
 }
@@ -178,4 +178,71 @@ if (qz) {
     }).catch(function(){});
   }
   if(document.readyState==='complete') setTimeout(start,300); else window.addEventListener('load',function(){ setTimeout(start,300); });
+})();
+
+
+/* PC에서 문자·전화 버튼을 누르면 QR코드 창 띄우기 (휴대폰은 그대로 문자창·전화 화면) */
+(function(){
+  var ua = navigator.userAgent;
+  var mobile = /Android|iPhone|iPad|iPod|Mobile|Windows Phone/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  var fine = !window.matchMedia || matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (mobile || !fine) return;
+  var TEL = '01029008802', SHOW = '010-2900-8802';
+  var me = document.currentScript && document.currentScript.src;
+  var qrSrc = me ? me.replace(/site\.js(\?.*)?$/, 'qrcode.js') : 'js/qrcode.js';
+  var loading = null;
+  function loadQR(cb){
+    if (window.qrcode) return cb();
+    if (!loading) { loading = []; var s = document.createElement('script'); s.src = qrSrc; s.onload = function(){ var l = loading; loading = null; l.forEach(function(f){ f(); }); }; document.head.appendChild(s); }
+    loading.push(cb);
+  }
+  function svgFor(text){
+    qrcode.stringToBytes = qrcode.stringToBytesFuncs['UTF-8'];
+    var q = qrcode(0, 'M'); q.addData(text, 'Byte'); q.make();
+    return q.createSvgTag({ cellSize: 6, margin: 2, scalable: true, alt: 'QR코드' });
+  }
+  var box = null, lastFocus = null;
+  function close(){ if (!box) return; box.classList.remove('on'); document.documentElement.classList.remove('pjqr-lock'); if (lastFocus) lastFocus.focus(); }
+  function build(){
+    box = document.createElement('div');
+    box.className = 'pjqr';
+    box.innerHTML = '<div class="pjqr-bg" data-x></div><div class="pjqr-box" role="dialog" aria-modal="true" aria-labelledby="pjqr-t">' +
+      '<button type="button" class="pjqr-x" data-x aria-label="닫기">&times;</button>' +
+      '<span class="pjqr-kick"></span><h3 id="pjqr-t">휴대폰 카메라로<br>QR코드를 찍어 주세요</h3>' +
+      '<div class="pjqr-code"></div><p class="pjqr-sub"></p>' +
+      '<div class="pjqr-num"><b>' + SHOW + '</b><button type="button" class="pjqr-copy">번호 복사</button></div></div>';
+    document.body.appendChild(box);
+    box.addEventListener('click', function(e){ if (e.target.hasAttribute('data-x')) close(); });
+    document.addEventListener('keydown', function(e){ if (e.key === 'Escape') close(); });
+    var cp = box.querySelector('.pjqr-copy');
+    cp.addEventListener('click', function(){
+      var done = function(){ cp.textContent = '복사했어요'; setTimeout(function(){ cp.textContent = '번호 복사'; }, 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(SHOW).then(done, done);
+      else { var t = document.createElement('textarea'); t.value = SHOW; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (er) {} t.remove(); done(); }
+    });
+  }
+  function open(kind, body){
+    loadQR(function(){
+      if (!box) build();
+      var payload = kind === 'sms' ? 'SMSTO:' + TEL + ':' + (body || '') : 'tel:' + TEL;
+      box.className = 'pjqr ' + kind;
+      box.querySelector('.pjqr-kick').textContent = kind === 'sms' ? '문자 보내고 견적 받기' : '전화하기';
+      box.querySelector('.pjqr-code').innerHTML = svgFor(payload);
+      box.querySelector('.pjqr-sub').innerHTML = kind === 'sms' ? '문자창이 바로 열립니다.<br>사진을 붙여서 보내주세요.' : '전화 화면으로 바로 넘어갑니다.';
+      lastFocus = document.activeElement;
+      document.documentElement.classList.add('pjqr-lock');
+      void box.offsetWidth; box.classList.add('on');
+      box.querySelector('.pjqr-x').focus();
+    });
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target.closest && e.target.closest('a[href^="sms:"], a[href^="tel:"]');
+    if (!a) return;
+    e.preventDefault();
+    var h = a.getAttribute('href') || '';
+    if (h.indexOf('sms:') === 0) {
+      var m = h.match(/[?&]body=([^&]*)/);
+      open('sms', m ? decodeURIComponent(m[1]) : '안녕하세요, 파파장스 사이트 보고 연락드립니다.');
+    } else open('tel');
+  });
 })();
