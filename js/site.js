@@ -336,3 +336,24 @@ if (qz) {
     b.click();
   });
 })();
+
+/* 첫 화면 작업 전후 비교 + 어두운 머리말 (2026-11-22) */
+(function(){
+var box=document.querySelector('[data-babox]');
+if(box){var S=JSON.parse(box.dataset.babox),v=box.querySelector('.ba-view'),bf=v.querySelector('.bf'),af=v.querySelector('.af'),th=box.querySelectorAll('.ba-th button'),cur=0,u=0,tm;
+ function show(k,anim){cur=k;var s=S[k];bf.src=s.b;af.src=s.a;bf.alt=s.t+' 작업 전';af.alt=s.t+' 작업 후';v.setAttribute('aria-label',s.t+' 작업 전후 비교');
+  box.querySelector('.ba-cap small').textContent=s.p;box.querySelector('.ba-cap strong').textContent=s.t;
+  th.forEach(function(b){b.classList.toggle('on',+b.dataset.i===k)});
+  if(anim!==false){v.style.setProperty('--bp','90%');clearTimeout(tm);tm=setTimeout(function(){v.style.setProperty('--bp','50%')},800)}}
+ setInterval(function(){if(!u)show((cur+1)%S.length)},5500);
+ th.forEach(function(b){b.addEventListener('click',function(){u=1;show(+b.dataset.i)})});
+ box.querySelector('.pv').addEventListener('click',function(){u=1;show((cur+S.length-1)%S.length)});
+ box.querySelector('.nx').addEventListener('click',function(){u=1;show((cur+1)%S.length)});
+ function mv(e){var q=v.getBoundingClientRect();v.style.setProperty('--bp',Math.max(0,Math.min(100,(e.clientX-q.left)/q.width*100))+'%')}
+ var d=0;v.addEventListener('pointerdown',function(e){d=1;u=1;clearTimeout(tm);v.classList.add('drag');mv(e);try{v.setPointerCapture(e.pointerId)}catch(x){}});
+ v.addEventListener('pointermove',function(e){if(d)mv(e)});
+ function up(){d=0;v.classList.remove('drag')}v.addEventListener('pointerup',up);v.addEventListener('pointercancel',up);
+ show(0,false);}
+var top=document.querySelector('.top[data-dark]'),hero=document.querySelector('.hero-dark');
+if(top&&hero){function chk(){top.classList.toggle('on-dark',window.scrollY<hero.offsetHeight-70)}chk();window.addEventListener('scroll',chk,{passive:true});window.addEventListener('resize',chk);}
+})();
